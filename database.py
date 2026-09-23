@@ -1,12 +1,22 @@
+import os
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+
+load_dotenv()
 
 
 # ============================================================
 # DATABASE CONNECTION
 # ============================================================
 
-DATABASE_URL = "postgresql+psycopg2://postgres:Consolidated%4019@localhost:5432/Martin"
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if not DATABASE_URL:
+    raise RuntimeError(
+        "DATABASE_URL is not set. Create a .env file in the backend folder "
+        "with DATABASE_URL=postgresql+psycopg2://..."
+    )
 
 
 # ============================================================
@@ -16,7 +26,14 @@ DATABASE_URL = "postgresql+psycopg2://postgres:Consolidated%4019@localhost:5432/
 engine = create_engine(
     DATABASE_URL,
     pool_pre_ping=True,
-    echo=False
+    echo=False,
+    pool_size=5,
+    max_overflow=10,
+    pool_recycle=300,
+    connect_args={
+        "sslmode": "require",
+        "connect_timeout": 10,
+    },
 )
 
 
@@ -43,11 +60,8 @@ Base = declarative_base()
 # ============================================================
 
 def get_db():
-
     db = SessionLocal()
-
     try:
         yield db
-
     finally:
         db.close()
