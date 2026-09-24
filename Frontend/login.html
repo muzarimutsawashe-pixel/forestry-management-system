@@ -1,0 +1,515 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Allied Timbers Zimbabwe | Login
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0b3d24,
+                    #14532d,
+                    #1f6b38
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 430px;
+        }
+
+        .login-card {
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 38px 38px 34px;
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.22);
+        }
+
+        .logo-container {
+            text-align: center;
+
+            margin-bottom: 22px;
+        }
+
+        .logo {
+            width: 110px;
+            height: 80px;
+
+            object-fit: contain;
+        }
+
+        .login-title {
+            text-align: center;
+
+            color: #0b3d24;
+
+            font-size: 25px;
+
+            font-weight: 700;
+
+            margin-bottom: 5px;
+        }
+
+        .login-subtitle {
+            text-align: center;
+
+            color: #66736b;
+
+            font-size: 13px;
+
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #35433b;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+
+            height: 45px;
+
+            padding: 10px 13px;
+
+            border: 1px solid #ccd5cf;
+
+            border-radius: 7px;
+
+            background: white;
+
+            color: #17221b;
+
+            font-size: 14px;
+
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: #2f7d32;
+
+            box-shadow:
+                0 0 0 3px rgba(
+                    47,
+                    125,
+                    50,
+                    0.12
+                );
+        }
+
+        .login-button {
+            width: 100%;
+
+            height: 45px;
+
+            margin-top: 5px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            background: #166534;
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        .login-button:hover {
+            background: #0b3d24;
+        }
+
+        .login-button:disabled {
+            opacity: 0.7;
+
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            display: none;
+
+            margin-bottom: 18px;
+
+            padding: 11px 13px;
+
+            border-radius: 7px;
+
+            background: #fef3f2;
+
+            border: 1px solid #f2c7c3;
+
+            color: #b42318;
+
+            font-size: 13px;
+        }
+
+        .footer {
+            text-align: center;
+
+            margin-top: 22px;
+
+            color: #7a857e;
+
+            font-size: 11px;
+        }
+
+        .footer strong {
+            color: #14532d;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="login-container">
+
+        <div class="login-card">
+
+            <div class="logo-container">
+
+                <img
+                    src="images/allied-timbers-logo.png"
+                    alt="Allied Timbers Zimbabwe"
+                    class="logo"
+                >
+
+            </div>
+
+
+            <h1 class="login-title">
+                Forestry Management System
+            </h1>
+
+            <p class="login-subtitle">
+                Allied Timbers Zimbabwe
+            </p>
+
+
+            <div
+                id="errorMessage"
+                class="error-message"
+            ></div>
+
+
+            <form id="loginForm">
+
+                <div class="form-group">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        class="form-control"
+                        placeholder="Enter username"
+                        autocomplete="username"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        class="form-control"
+                        placeholder="Enter password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    id="loginButton"
+                    class="login-button"
+                >
+                    <span id="loginButtonText">
+                        Login
+                    </span>
+                </button>
+
+            </form>
+
+
+            <div class="footer">
+
+                Allied Timbers Zimbabwe
+
+                <br>
+
+                <strong>
+                    Forestry Management System
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const API_URL = "https://forestry-backend-vlyr.onrender.com/";
+
+
+        const loginForm =
+            document.getElementById("loginForm");
+
+        const loginButton =
+            document.getElementById("loginButton");
+
+        const loginButtonText =
+            document.getElementById("loginButtonText");
+
+        const errorMessage =
+            document.getElementById("errorMessage");
+
+
+        function showError(message) {
+
+            errorMessage.textContent = message;
+
+            errorMessage.style.display = "block";
+
+        }
+
+
+        function hideError() {
+
+            errorMessage.textContent = "";
+
+            errorMessage.style.display = "none";
+
+        }
+
+
+        loginForm.addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+                hideError();
+
+                const username =
+                    document
+                        .getElementById("username")
+                        .value
+                        .trim();
+
+                const password =
+                    document
+                        .getElementById("password")
+                        .value;
+
+
+                loginButton.disabled = true;
+
+                loginButtonText.textContent =
+                    "Signing in...";
+
+
+                try {
+
+                    console.log(
+                        "Connecting to:",
+                        API_URL + "/api/login"
+                    );
+
+
+                    const response =
+                        await fetch(
+                            API_URL + "/api/login",
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body: JSON.stringify({
+                                    username: username,
+                                    password: password
+                                })
+                            }
+                        );
+
+
+                    console.log(
+                        "Backend response:",
+                        response.status
+                    );
+
+
+                    const data =
+                        await response.json();
+
+
+                    console.log(
+                        "Login data:",
+                        data
+                    );
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            data.detail ||
+                            "Login request failed."
+                        );
+
+                    }
+
+
+                    if (!data.success) {
+
+                        throw new Error(
+                            "Invalid username or password."
+                        );
+
+                    }
+
+
+                    localStorage.setItem(
+                        "token",
+                        data.token
+                    );
+
+                    localStorage.setItem(
+                        "username",
+                        data.username
+                    );
+
+                    localStorage.setItem(
+                        "role",
+                        data.role
+                    );
+
+                    localStorage.setItem(
+                        "loggedIn",
+                        "true"
+                    );
+
+
+                    window.location.href =
+                        "index.html";
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "LOGIN ERROR:",
+                        error
+                    );
+
+
+                    if (
+                        error.name ===
+                        "TypeError"
+                    ) {
+
+                        showError(
+                            "Cannot connect to the server. Make sure the FastAPI backend is running on https://forestry-backend-vlyr.onrender.com/."
+                        );
+
+                    }
+
+                    else {
+
+                        showError(
+                            "Login failed: " +
+                            error.message
+                        );
+
+                    }
+
+                }
+
+                finally {
+
+                    loginButton.disabled =
+                        false;
+
+                    loginButtonText.textContent =
+                        "Login";
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
+
